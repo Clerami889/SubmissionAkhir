@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Background Color -->
+    <solid android:color="@color/color_four" />
+
+    <!-- Rounded Corners -->
+    <corners android:radius="16dp" />
+    <stroke android:width="2dp"
+
+
+        />
+
+
+
+    <!-- Optional: Add shadow effect (optional) -->
+    <padding
+        android:left="8dp"
+        android:top="8dp"
+        android:right="8dp"
+        android:bottom="8dp" />
+</shape>

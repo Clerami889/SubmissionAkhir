@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="16dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="6dp"
+    app:cardBackgroundColor="?attr/colorOnPrimary"
+    app:cardUseCompatPadding="true"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.detail.DetailActivity">
+
+
+<androidx.constraintlayout.widget.ConstraintLayout
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:padding="16dp">
+
+<!-- Name TextView -->
+<TextView
+    android:id="@+id/tv_detail_name"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="@string/name"
+    android:textSize="20sp"
+    android:textColor="@android:color/black"
+    android:layout_marginTop="16dp"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    android:layout_marginBottom="8dp"
+    android:gravity="center" />
+
+<!-- Image View -->
+<ImageView
+    android:id="@+id/iv_detail_photo"
+    android:layout_width="0dp"
+    android:layout_height="200dp"
+    android:layout_marginTop="16dp"
+    android:contentDescription="TODO"
+    app:layout_constraintTop_toBottomOf="@id/tv_detail_name"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    android:src="@drawable/ic_launcher_foreground"
+    android:scaleType="centerCrop"
+    android:layout_marginBottom="16dp" />
+
+<!-- Description TextView -->
+<TextView
+    android:id="@+id/tv_detail_description"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:text="@string/detail_deskripsi"
+    android:textSize="16sp"
+    android:textColor="?attr/colorOnTertiary"
+    android:layout_marginTop="8dp"
+    app:layout_constraintTop_toBottomOf="@id/iv_detail_photo"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    android:layout_marginBottom="8dp"
+    android:lineSpacingExtra="4dp" />
+
+<!-- Created Date TextView -->
+<TextView
+    android:id="@+id/tv_detail_created"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="@string/tanggal_dibuat"
+    android:textSize="14sp"
+    android:textColor="?attr/colorOnTertiary"
+    android:layout_marginTop="20dp"
+    app:layout_constraintTop_toBottomOf="@id/tv_detail_description"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    android:gravity="center" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

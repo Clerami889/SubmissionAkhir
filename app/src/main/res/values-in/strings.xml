@@ -1,0 +1,34 @@
+
+<resources>
+    <string name="app_name">StoryGram</string>
+    <string name="masukan_email">Masukan Email</string>
+    <string name="masukan_password">Masukan Password</string>
+    <string name="masuk">Masuk</string>
+    <string name="dont_have_account_sign_up">Dont have Account? <span>Sign up</span></string>
+    <string name="buat_akun">Buat Akun</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="username">Nama Pengguna</string>
+    <string name="daftar">Daftar</string>
+    <string name="already_have_an_account_login">Already have an Account? <span>Login</span></string>
+    <string name="password_must_atleast_be_8_characters_long">Password harus memiliki minimal 8 huruf</string>
+    <string name="keluar">Keluar</string>
+    <string name="deskripsi">Deskripsi</string>
+    <string name="nama">Nama</string>
+    <string name="story">Cerita</string>
+    <string name="name">Nama</string>
+    <string name="detail_deskripsi">Deskripsi</string>
+    <string name="tanggal_dibuat">Tanggal Pembuatan</string>
+    <string name="logo_aplikasi">Logo Aplikasi</string>
+    <string name="tambah_cerita">Tambah Cerita</string>
+    <string name="upload_cerita">Upload Cerita</string>
+    <string name="deskripsi_cerita">Deskripsi Cerita</string>
+    <string name="tambah_gambar">Pilih Gambar</string>
+    <string name="settings">Pengaturan</string>
+    <string name="take_photo">Ambil Gambar</string>
+    <string name="login_button_text_enabled">Masuk</string>
+    <string name="login_button_text_disabled">Password terlalu pendek</string>
+    <string name="register_button_text_enabled">Daftar</string>
+    <string name="default_button_text_disabled">Password terlalu pendek</string>
+
+</resources>

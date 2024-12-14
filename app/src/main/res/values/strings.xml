@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    <string name="app_name">StoryGram</string>
+    <string name="masukan_email">Enter Email</string>
+    <string name="masukan_password">Enter Password</string>
+    <string name="masuk">Login</string>
+    <string name="dont_have_account_sign_up">Don\'t have an Account? <span>Sign up</span></string>
+    <string name="buat_akun">Create Account</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="username">Username</string>
+    <string name="daftar">Sign Up</string>
+    <string name="already_have_an_account_login">Already have an Account? <span>Login</span></string>
+    <string name="password_must_atleast_be_8_characters_long">Password must be at least 8 characters long</string>
+    <string name="keluar">Logout</string>
+    <string name="deskripsi">Description</string>
+    <string name="nama">Name</string>
+    <string name="story">Story</string>
+    <string name="name">Name</string>
+    <string name="detail_deskripsi">Description</string>
+    <string name="tanggal_dibuat">Creation Date</string>
+    <string name="logo_aplikasi">App Logo</string>
+    <string name="tambah_cerita">Add Story</string>
+    <string name="upload_cerita">Upload Story</string>
+    <string name="deskripsi_cerita">Story Description</string>
+    <string name="tambah_gambar">Add Image</string>
+    <string name="settings">Settings</string>
+    <string name="take_photo">Take Photo</string>
+    <string name="login_button_text_disabled">Password too short</string>
+    <string name="login_button_text_enabled">Log In</string>
+    <string name="register_button_text_enabled">Sign Up</string>
+    <string name="default_button_text_disabled">Password too short</string>
+    <string name="title_activity_maps">MapsActivity</string>
+    <string name="map">Map</string>
+    <string name="normal_type">Normal</string>
+    <string name="satellite_type">Satellite</string>
+    <string name="terrain_type">Terrain</string>
+    <string name="hybrid_type">Hybrid</string>
+    <string name="email_cannot_be_empty">Email cannot be empty</string>
+    <string name="invalid_email_format">Invalid email format</string>
+
+</resources>
