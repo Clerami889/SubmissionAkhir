@@ -53,6 +53,8 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.ui.test.android)
     implementation(libs.play.services.maps)
+    implementation(libs.play.services.location)
+    implementation(libs.androidx.espresso.idling.resource)
     testImplementation(libs.junit)
     testImplementation(libs.junit.jupiter)
     androidTestImplementation(libs.androidx.junit)
@@ -71,7 +73,19 @@ dependencies {
 
     testImplementation(libs.androidx.core.testing)
     testImplementation(libs.kotlinx.coroutines.test)
-
+    testImplementation (libs.androidx.paging.common)
     testImplementation(libs.mockito.core)
     testImplementation(libs.mockito.inline)
+    testImplementation (libs.androidx.rules)
+    testImplementation (libs.androidx.idling.concurrent)
+
+    androidTestImplementation (libs.androidx.runner)
+
+    androidTestImplementation (libs.androidx.junit.v113)
+    androidTestImplementation (libs.androidx.rules)
+    androidTestImplementation (libs.androidx.espresso.intents) // Use the latest version
+    androidTestImplementation (libs.androidx.junit.v115)  // This is needed for JUnit and other test support
+
+
+    androidTestImplementation (libs.mockito.android)
 }

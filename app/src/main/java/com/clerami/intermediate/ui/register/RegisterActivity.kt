@@ -22,8 +22,8 @@ import com.clerami.intermediate.R
 import com.clerami.intermediate.data.remote.retrofit.ApiConfig
 import com.clerami.intermediate.databinding.ActivityRegisterBinding
 import com.clerami.intermediate.ui.customview.EditText
-import com.clerami.intermediate.utils.Resource
 import com.clerami.intermediate.ui.login.LoginActivity
+import com.clerami.intermediate.utils.Resource
 import com.clerami.intermediate.utils.SessionManager
 
 class RegisterActivity : AppCompatActivity() {
@@ -44,8 +44,6 @@ class RegisterActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-
-
 
 
         val apiService = ApiConfig.getApiService()
@@ -71,8 +69,6 @@ class RegisterActivity : AppCompatActivity() {
         addPasswordTextWatcher()
 
 
-
-
     }
 
 
@@ -93,24 +89,29 @@ class RegisterActivity : AppCompatActivity() {
             when (resource.status) {
                 Resource.Status.SUCCESS -> {
 
-                    binding.loading.visibility= View.VISIBLE
-                    binding.loading.setProgressCompat(100,true)
+                    binding.loading.visibility = View.VISIBLE
+                    binding.loading.setProgressCompat(100, true)
                     val intent = Intent(this, LoginActivity::class.java).apply {
-                        putExtra("REGISTRATION_SUCCESS", "Account created successfully. Please log in.")
+                        putExtra(
+                            "REGISTRATION_SUCCESS",
+                            "Account created successfully. Please log in."
+                        )
                     }
                     startActivity(intent)
                     finish()
                 }
+
                 Resource.Status.ERROR -> {
-                    binding.loading.visibility= View.INVISIBLE
-                    binding.loading.setProgressCompat(0,true)
+                    binding.loading.visibility = View.INVISIBLE
+                    binding.loading.setProgressCompat(0, true)
                     Toast.makeText(this, resource.message, Toast.LENGTH_SHORT).show()
                 }
+
                 Resource.Status.LOADING -> {
-                    binding.loading.visibility= View.VISIBLE
-                    binding.loading.setProgressCompat(30,true)
-                    moveProgress(30,50)
-                    moveProgress(50,80)
+                    binding.loading.visibility = View.VISIBLE
+                    binding.loading.setProgressCompat(30, true)
+                    moveProgress(30, 50)
+                    moveProgress(50, 80)
 
                 }
             }
@@ -131,9 +132,20 @@ class RegisterActivity : AppCompatActivity() {
 
     private fun addPasswordTextWatcher() {
         binding.password.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(charSequence: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun beforeTextChanged(
+                charSequence: CharSequence?,
+                start: Int,
+                count: Int,
+                after: Int
+            ) {
+            }
 
-            override fun onTextChanged(charSequence: CharSequence?, start: Int, before: Int, count: Int) {
+            override fun onTextChanged(
+                charSequence: CharSequence?,
+                start: Int,
+                before: Int,
+                count: Int
+            ) {
                 setMyButtonEnable()
 
             }
@@ -171,7 +183,12 @@ class RegisterActivity : AppCompatActivity() {
             }
         }
 
-        spannableString.setSpan(clickableSpan, startIndex, endIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        spannableString.setSpan(
+            clickableSpan,
+            startIndex,
+            endIndex,
+            Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
         binding.alreadyHaveAccount.text = spannableString
         binding.alreadyHaveAccount.movementMethod = LinkMovementMethod.getInstance()
     }

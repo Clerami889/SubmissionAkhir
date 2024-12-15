@@ -12,7 +12,7 @@ class StoryRepository(private val apiService: ApiService) {
 
     fun getStories(token: String): Flow<PagingData<ListStoryItem>> {
         return Pager(
-            config = PagingConfig(pageSize = 20), // Adjust the page size as necessary
+            config = PagingConfig(pageSize = 10), // Adjust the page size as necessary
             pagingSourceFactory = { StoryPagingSource(apiService, token) }
         ).flow
     }

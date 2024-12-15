@@ -2,15 +2,14 @@ package com.clerami.intermediate.ui.story
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.clerami.intermediate.R
-import com.clerami.intermediate.databinding.ActivityStoryBinding
 import com.clerami.intermediate.data.remote.retrofit.ApiConfig
+import com.clerami.intermediate.databinding.ActivityStoryBinding
 import com.clerami.intermediate.ui.detail.DetailActivity
 import com.clerami.intermediate.utils.SessionManager
 
@@ -36,11 +35,12 @@ class StoryActivity : AppCompatActivity() {
 
 
         storyAdapter = StoryAdapter { storyId ->
-
+            Log.d("StoryActivity", "Navigating to DetailActivity with storyId: $storyId")
             val intent = Intent(this, DetailActivity::class.java)
             intent.putExtra("story_id", storyId)
             startActivity(intent)
         }
+
 
 
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
@@ -62,5 +62,9 @@ class StoryActivity : AppCompatActivity() {
         if (token != null) {
             storyViewModel.getStories(token)
         }
+
+
     }
+
+
 }

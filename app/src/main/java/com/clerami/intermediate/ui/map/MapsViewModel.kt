@@ -4,14 +4,9 @@ package com.clerami.intermediate.ui.map
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.clerami.intermediate.data.remote.response.GetAllStories
 import com.clerami.intermediate.data.remote.response.ListStoryItem
-import com.clerami.intermediate.data.remote.response.Story
-import com.clerami.intermediate.data.remote.retrofit.ApiConfig
 import com.clerami.intermediate.data.remote.retrofit.ApiService
-import com.clerami.intermediate.utils.SessionManager
-import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

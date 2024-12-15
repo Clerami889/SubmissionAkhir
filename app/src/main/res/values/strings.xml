@@ -39,5 +39,8 @@
     <string name="hybrid_type">Hybrid</string>
     <string name="email_cannot_be_empty">Email cannot be empty</string>
     <string name="invalid_email_format">Invalid email format</string>
-
+    <string name="retry">Retry</string>
+    <string name="sertakan_lokasi">Sertakan Lokasi</string>
+    <string name="lat">Lat</string>
+    <string name="lon">Lon</string>
 </resources>

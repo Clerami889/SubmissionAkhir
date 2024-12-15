@@ -15,7 +15,8 @@ class EditText @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null
 ) : AppCompatEditText(context, attrs), View.OnTouchListener {
 
-    private var clearButtonImage: Drawable = ContextCompat.getDrawable(context, R.drawable.ic_close_black_24dp) as Drawable
+    private var clearButtonImage: Drawable =
+        ContextCompat.getDrawable(context, R.drawable.ic_close_black_24dp) as Drawable
 
     private var validationCallback: ValidationCallback? = null
 
@@ -53,7 +54,12 @@ class EditText @JvmOverloads constructor(
         endOfTheText: Drawable? = null,
         bottomOfTheText: Drawable? = null
     ) {
-        setCompoundDrawablesWithIntrinsicBounds(startOfTheText, topOfTheText, endOfTheText, bottomOfTheText)
+        setCompoundDrawablesWithIntrinsicBounds(
+            startOfTheText,
+            topOfTheText,
+            endOfTheText,
+            bottomOfTheText
+        )
     }
 
     override fun onTouch(v: View?, event: MotionEvent): Boolean {
@@ -76,6 +82,7 @@ class EditText @JvmOverloads constructor(
                         showClearButton()
                         return true
                     }
+
                     MotionEvent.ACTION_UP -> {
                         text?.clear()
                         hideClearButton()

@@ -13,7 +13,6 @@ import com.clerami.intermediate.utils.ImageUtils
 import com.clerami.intermediate.utils.SessionManager
 import com.clerami.intermediate.utils.toMediaTypeOrNull
 import okhttp3.MultipartBody
-import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import retrofit2.Call
@@ -30,14 +29,19 @@ class AddStoryViewModel : ViewModel() {
 
     private val apiService = ApiConfig.getApiService()
 
-    fun uploadStory(context: Context, description: String, photoUri: Uri?, lat: Float?, lon: Float?) {
+    fun uploadStory(
+        context: Context,
+        description: String,
+        photoUri: Uri?,
+        lat: Float?,
+        lon: Float?
+    ) {
         if (description.isEmpty() || photoUri == null) {
             _uploadResult.value = "Please provide description and photo"
             return
         }
 
         var file = getFileFromUri(context, photoUri)
-
 
         if (file == null || !file.exists() || !file.isFile) {
             _uploadResult.value = "Invalid file"
@@ -55,40 +59,49 @@ class AddStoryViewModel : ViewModel() {
             }
         }
 
+
         val descriptionBody = description.toRequestBody("text/plain".toMediaTypeOrNull())
-
-        val photoPart = MultipartBody.Part.createFormData("photo", file.name, file.asRequestBody("image/*".toMediaTypeOrNull()))
-
-        val latBody = lat?.let {
-            it.toString().toRequestBody("text/plain".toMediaTypeOrNull())
-        } ?: "".toRequestBody("text/plain".toMediaTypeOrNull())
-
-        val lonBody = lon?.let {
-            it.toString().toRequestBody("text/plain".toMediaTypeOrNull())
-        } ?: "".toRequestBody("text/plain".toMediaTypeOrNull())
+        val photoPart = MultipartBody.Part.createFormData(
+            "photo",
+            file.name,
+            file.asRequestBody("image/*".toMediaTypeOrNull())
+        )
 
 
+        val latBody = lat?.toString()?.toRequestBody("text/plain".toMediaTypeOrNull())
+        val lonBody = lon?.toString()?.toRequestBody("text/plain".toMediaTypeOrNull())
 
 
         val token = getTokenFromSession(context) ?: return
 
 
-        apiService.addStory("Bearer $token", descriptionBody, photoPart, latBody, lonBody)
-            .enqueue(object : Callback<AddNewStory> {
-                override fun onResponse(call: Call<AddNewStory>, response: Response<AddNewStory>) {
-                    if (response.isSuccessful && response.body() != null) {
-                        val message = response.body()?.message
-                        _uploadResult.value = message ?: "Success"
-                    } else {
-                        _uploadResult.value = "Failed to upload story: ${response.message()}"
-                    }
-                }
+        if (latBody != null) {
+            if (lonBody != null) {
+                apiService.addStory("Bearer $token", descriptionBody, photoPart, latBody, lonBody)
+                    .enqueue(object : Callback<AddNewStory> {
+                        override fun onResponse(
+                            call: Call<AddNewStory>,
+                            response: Response<AddNewStory>
+                        ) {
+                            if (response.isSuccessful && response.body() != null) {
+                                val message = response.body()?.message
+                                _uploadResult.value = message ?: "Success"
+                                Log.d("AddStoryViewModel", "Lat: $lat, Lon: $lon")
 
-                override fun onFailure(call: Call<AddNewStory>, t: Throwable) {
-                    _uploadResult.value = "Error: ${t.message}"
-                }
-            })
+                            } else {
+                                _uploadResult.value =
+                                    "Failed to upload story: ${response.message()}"
+                            }
+                        }
+
+                        override fun onFailure(call: Call<AddNewStory>, t: Throwable) {
+                            _uploadResult.value = "Error: ${t.message}"
+                        }
+                    })
+            }
+        }
     }
+
 
     fun getFileFromUri(context: Context, uri: Uri): File? {
         try {
@@ -116,7 +129,8 @@ class AddStoryViewModel : ViewModel() {
             return tempFile
         } catch (e: Exception) {
 
-            Toast.makeText(context, "Error copying file, please try again.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "Error copying file, please try again.", Toast.LENGTH_SHORT)
+                .show()
             Log.e("AddStoryViewModel", "Error copying content URI to temp file: ", e)
         } finally {
             inputStream?.close()

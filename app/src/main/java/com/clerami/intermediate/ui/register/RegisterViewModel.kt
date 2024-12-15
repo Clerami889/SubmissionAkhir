@@ -25,7 +25,8 @@ class RegisterViewModel(private val apiService: ApiService) : ViewModel() {
 
         try {
 
-            val response = apiService.register(RegisterRequest(username,email, password, )).execute()
+            val response =
+                apiService.register(RegisterRequest(username, email, password)).execute()
 
 
             if (response.isSuccessful) {

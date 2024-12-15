@@ -13,7 +13,6 @@ import com.clerami.intermediate.data.remote.retrofit.ApiService
 import kotlinx.coroutines.launch
 
 
-
 class StoryViewModel(
     private val storyRepository: StoryRepository,
     private val context: Context,
@@ -33,11 +32,16 @@ class StoryViewModel(
             try {
                 storyRepository.getStories("Bearer $token").collect { pagingData ->
                     _stories.value = pagingData
-                    Toast.makeText(context, "Stories loaded successfully", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "Stories loaded successfully", Toast.LENGTH_SHORT)
+                        .show()
                 }
             } catch (exception: Exception) {
                 _isLoading.value = false
-                Toast.makeText(context, "Error loading stories: ${exception.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    context,
+                    "Error loading stories: ${exception.message}",
+                    Toast.LENGTH_SHORT
+                ).show()
             } finally {
                 _isLoading.value = false
             }

@@ -1,9 +1,9 @@
 package com.clerami.intermediate.ui.story
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -17,10 +17,21 @@ class StoryAdapter(
 
     inner class StoryViewHolder(val binding: ItemStoryBinding) :
         RecyclerView.ViewHolder(binding.root) {
+
         init {
             binding.root.setOnClickListener {
-                val story = getItem(adapterPosition)
-                story?.id?.let { onItemClick(it) }
+                val position = bindingAdapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    val story = getItem(position)
+                    if (story != null && story.id != null) {
+                        Log.d("StoryAdapter", "Clicked storyId: ${story.id}")
+                        onItemClick(story.id)
+                    } else {
+                        Log.e("StoryAdapter", "Story or storyId is null at position $position")
+                    }
+                } else {
+                    Log.e("StoryAdapter", "Invalid adapter position: $position")
+                }
             }
         }
     }
@@ -32,12 +43,17 @@ class StoryAdapter(
 
     override fun onBindViewHolder(holder: StoryViewHolder, position: Int) {
         val story = getItem(position)
-        story?.let {
-            holder.binding.tvItemName.text = it.name
-            holder.binding.tvItemDescription.text = it.description
-            Glide.with(holder.binding.ivItemPhoto.context)
-                .load(it.photoUrl)
-                .into(holder.binding.ivItemPhoto)
+        if (story == null) {
+            Log.w("StoryAdapter", "Story at position $position is null (loading state)")
+            return
+        }
+
+        holder.binding.apply {
+            tvItemName.text = story.name ?: "No Name"
+            tvItemDescription.text = story.description ?: "No Description"
+            Glide.with(ivItemPhoto.context)
+                .load(story.photoUrl)
+                .into(ivItemPhoto)
         }
     }
 
@@ -51,13 +67,17 @@ class StoryAdapter(
         }
     }
 
+
     companion object {
         val DIFF_CALLBACK = object : DiffUtil.ItemCallback<ListStoryItem>() {
             override fun areItemsTheSame(oldItem: ListStoryItem, newItem: ListStoryItem): Boolean {
                 return oldItem == newItem
             }
 
-            override fun areContentsTheSame(oldItem: ListStoryItem, newItem:ListStoryItem): Boolean {
+            override fun areContentsTheSame(
+                oldItem: ListStoryItem,
+                newItem: ListStoryItem
+            ): Boolean {
                 return oldItem.id == newItem.id
             }
         }

@@ -1,7 +1,5 @@
 package com.clerami.intermediate.ui.map
 
-import android.app.Application
-import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.clerami.intermediate.data.remote.retrofit.ApiService

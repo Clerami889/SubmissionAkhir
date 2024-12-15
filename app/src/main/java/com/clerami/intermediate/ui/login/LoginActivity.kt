@@ -12,15 +12,14 @@ import android.text.style.ClickableSpan
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.ui.test.isEnabled
 import androidx.lifecycle.ViewModelProvider
 import com.clerami.intermediate.MainActivity
 import com.clerami.intermediate.R
 import com.clerami.intermediate.data.remote.retrofit.ApiConfig
 import com.clerami.intermediate.databinding.ActivityLoginBinding
 import com.clerami.intermediate.ui.customview.EditText
-import com.clerami.intermediate.ui.customview.MyButton
 import com.clerami.intermediate.ui.register.RegisterActivity
+
 import com.clerami.intermediate.utils.Resource
 import com.clerami.intermediate.utils.SessionManager
 
@@ -29,40 +28,51 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
     private lateinit var loginViewModel: LoginViewModel
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // Skip login if already logged in
         if (SessionManager.isLoggedIn(this)) {
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
-            finish()
+            navigateToMainActivity()
             return
         }
 
         val apiService = ApiConfig.getApiService()
         loginViewModel = ViewModelProvider(this, LoginViewModelFactory(apiService)).get(LoginViewModel::class.java)
 
+        // Setting up SignUp clickable text
         setupSignUpClickableSpan()
-        setupPasswordFieldValidation()
+
+        // Password and Email Text Watchers
+        addPasswordTextWatcher()
+        addEmailTextWatcher()
+        loginViewModel.login("email@example.com", "password")
+        // Login Button Click Listener
         binding.login.setOnClickListener {
             val usernameOrEmail = binding.email.text.toString().trim()
             val password = binding.password.text.toString().trim()
 
             if (usernameOrEmail.isNotEmpty() && password.isNotEmpty()) {
                 performLogin(usernameOrEmail, password)
+            } else {
+                showToast("Please enter both email and password.")
             }
         }
 
+        // Handle successful registration message
         val successMessage = intent.getStringExtra("REGISTRATION_SUCCESS")
-        if (!successMessage.isNullOrEmpty()) {
-            Toast.makeText(this, successMessage, Toast.LENGTH_LONG).show()
+        successMessage?.let {
+            showToast(it)
         }
+    }
 
-        addPasswordTextWatcher()
-        addEmailTextWatcher()
-
+    private fun navigateToMainActivity() {
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 
     private fun performLogin(usernameOrEmail: String, password: String) {
@@ -71,22 +81,17 @@ class LoginActivity : AppCompatActivity() {
         loginViewModel.login(usernameOrEmail, password).observe(this) { resource ->
             when (resource.status) {
                 Resource.Status.SUCCESS -> {
-                    Toast.makeText(this, "Login Successful!", Toast.LENGTH_SHORT).show()
                     binding.loading.setProgressCompat(100, true)
-
-                    val loginResponse = resource.data
-                    if (loginResponse != null) {
-                        SessionManager.saveSession(this, loginResponse)
-                    }
-
-                    val intent = Intent(this, MainActivity::class.java)
-                    startActivity(intent)
-                    finish()
+                    showToast("Login Successful!")
+                    resource.data?.let { SessionManager.saveSession(this, it) }
+                    navigateToMainActivity()
                 }
+
                 Resource.Status.ERROR -> {
                     binding.loading.visibility = View.GONE
-                    Toast.makeText(this, resource.message, Toast.LENGTH_SHORT).show()
+                    showToast(resource.message ?: "Unknown error")
                 }
+
                 Resource.Status.LOADING -> {
                     binding.loading.visibility = View.VISIBLE
                     binding.loading.setProgressCompat(20, true)
@@ -98,14 +103,11 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun moveProgress(start: Int, end: Int) {
+        // Simplified progress movement, consider animations for smoother transitions
         val delay = 1000L
-        val increment = (end - start)
-
-        for (i in start until end step increment) {
-            Handler(Looper.getMainLooper()).postDelayed({
-                binding.loading.setProgressCompat(i, true)
-            }, (i - start) * delay)
-        }
+        Handler(Looper.getMainLooper()).postDelayed({
+            binding.loading.setProgressCompat(end, true)
+        }, delay)
     }
 
     private fun setupSignUpClickableSpan() {
@@ -117,8 +119,7 @@ class LoginActivity : AppCompatActivity() {
 
         val clickableSpan = object : ClickableSpan() {
             override fun onClick(widget: View) {
-                val intent = Intent(this@LoginActivity, RegisterActivity::class.java)
-                startActivity(intent)
+                startActivity(Intent(this@LoginActivity, RegisterActivity::class.java))
             }
 
             override fun updateDrawState(ds: android.text.TextPaint) {
@@ -136,12 +137,9 @@ class LoginActivity : AppCompatActivity() {
     private fun addPasswordTextWatcher() {
         binding.password.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(charSequence: CharSequence?, start: Int, count: Int, after: Int) {}
-
             override fun onTextChanged(charSequence: CharSequence?, start: Int, before: Int, count: Int) {
                 setMyButtonEnable()
-
             }
-
             override fun afterTextChanged(editable: Editable?) {}
         })
     }
@@ -149,19 +147,14 @@ class LoginActivity : AppCompatActivity() {
     private fun addEmailTextWatcher() {
         binding.email.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(charSequence: CharSequence?, start: Int, count: Int, after: Int) {}
-
             override fun onTextChanged(charSequence: CharSequence?, start: Int, before: Int, count: Int) {
                 val email = charSequence.toString()
-
-                if (email.isEmpty()) {
-                    binding.email.error = getString(R.string.email_cannot_be_empty)
-                } else if (!isValidEmail(email)) {
-                    binding.email.error = getString(R.string.invalid_email_format)
-                } else {
-                    binding.email.error = null
+                binding.email.error = when {
+                    email.isEmpty() -> getString(R.string.email_cannot_be_empty)
+                    !isValidEmail(email) -> getString(R.string.invalid_email_format)
+                    else -> null
                 }
             }
-
             override fun afterTextChanged(editable: Editable?) {}
         })
     }
@@ -176,14 +169,15 @@ class LoginActivity : AppCompatActivity() {
 
     private fun setMyButtonEnable() {
         val password = binding.password.text?.toString()
-        val isButtonEnabled = !password.isNullOrEmpty() && password.length >= 8
-        binding.login.isEnabled = isButtonEnabled
-
+        binding.login.isEnabled = !password.isNullOrEmpty() && password.length >= 8
     }
-
 
     private fun isValidEmail(email: String): Boolean {
         val emailPattern = "[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}"
         return email.matches(emailPattern.toRegex())
+    }
+
+    private fun showToast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 }

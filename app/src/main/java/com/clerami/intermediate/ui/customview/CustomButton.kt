@@ -26,7 +26,8 @@ class MyButton @JvmOverloads constructor(
         txtColorDisabled = ContextCompat.getColor(context, android.R.color.black)
         txtColorEnabled = ContextCompat.getColor(context, android.R.color.white)
         enabledBackground = ContextCompat.getDrawable(context, R.drawable.bg_button) as Drawable
-        disabledBackground = ContextCompat.getDrawable(context, R.drawable.bg_button_disable) as Drawable
+        disabledBackground =
+            ContextCompat.getDrawable(context, R.drawable.bg_button_disable) as Drawable
 
 
         val attributes = context.obtainStyledAttributes(attrs, R.styleable.MyButton)
